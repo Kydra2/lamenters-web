@@ -147,12 +147,20 @@
         document.getElementById("username").textContent = user.username;
         document.getElementById("access-user").innerHTML = buildAvatar(user);
 
-        // Auto-téléchargement + toast
-        const toast = document.getElementById("download-toast");
-        toast.style.display = "block";
-        setTimeout(() => {
-          window.location.href = "/download";
-        }, 800);
+        // Auto-téléchargement + toast (seulement à la première connexion)
+        if (!sessionStorage.getItem("dl_done")) {
+          sessionStorage.setItem("dl_done", "1");
+          const toast = document.getElementById("download-toast");
+          toast.style.display = "block";
+          setTimeout(() => {
+            const a = document.createElement("a");
+            a.href = "/download";
+            a.style.display = "none";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+          }, 1000);
+        }
       }
 
       // Nettoie l'URL

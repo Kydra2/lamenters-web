@@ -27,6 +27,14 @@ const DISCORD_OAUTH_URL =
   `&scope=identify%20guilds.members.read`;
 
 // ─── Middlewares ──────────────────────────────────────────────────────────────
+// Ne pas mettre en cache le HTML (pour que les mises à jour soient immédiates)
+app.use((req, res, next) => {
+  if (req.path === "/" || req.path.endsWith(".html")) {
+    res.setHeader("Cache-Control", "no-store");
+  }
+  next();
+});
+
 app.use(express.static("public"));
 
 app.use(
