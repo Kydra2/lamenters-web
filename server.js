@@ -89,8 +89,13 @@ app.get("/auth/callback", async (req, res) => {
       );
       memberRoles = memberRes.data.roles || [];
       hasAccess = memberRoles.some((roleId) => ALLOWED_ROLES.includes(roleId));
-    } catch {
-      // L'utilisateur n'est pas dans le serveur Discord
+      console.log(`[Auth] ${user.username} — roles: ${memberRoles.join(", ")}`);
+      console.log(`[Auth] ALLOWED_ROLES: ${ALLOWED_ROLES.join(", ")}`);
+      console.log(`[Auth] hasAccess: ${hasAccess}`);
+    } catch (memberErr) {
+      const status = memberErr.response?.status;
+      const data   = memberErr.response?.data;
+      console.error(`[Auth] Erreur guild member — status: ${status}`, data);
       hasAccess = false;
     }
 

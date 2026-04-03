@@ -309,6 +309,43 @@ html, body {
   text-align: center;
 }
 
+/* ── Badge vérifié ────────────────────────────────────────────────────────── */
+.verified-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(46, 204, 113, 0.1);
+  border: 1px solid rgba(46, 204, 113, 0.3);
+  color: var(--green);
+  border-radius: 20px;
+  padding: 7px 18px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.verified-badge strong {
+  color: var(--gold-light);
+}
+
+/* ── Toast téléchargement ─────────────────────────────────────────────────── */
+.download-toast {
+  background: rgba(46, 204, 113, 0.15);
+  border: 1px solid rgba(46, 204, 113, 0.35);
+  color: var(--green);
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  width: 100%;
+  text-align: center;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
 /* ── Footer ───────────────────────────────────────────────────────────────── */
 .footer {
   color: var(--text-dim);

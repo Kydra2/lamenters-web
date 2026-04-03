@@ -59,10 +59,10 @@
         <div class="card-icon">✅</div>
         <h2>Bienvenue, <span id="username"></span> !</h2>
         <div class="user-info" id="access-user"></div>
-        <p class="card-desc">
-          Tu es membre de la guilde. Télécharge la dernière version<br />
-          de l'addon ci-dessous.
-        </p>
+
+        <div class="verified-badge">
+          🛡️ Membre vérifié des <strong>Lamenters</strong>
+        </div>
 
         <div class="addon-box">
           <div class="addon-info">
@@ -72,15 +72,20 @@
               <div class="addon-version">Toujours à jour — branche <code>main</code></div>
             </div>
           </div>
-          <a href="/download" class="btn btn-download">
+          <a href="/download" id="download-btn" class="btn btn-download">
             ⬇ Télécharger l'addon
           </a>
+        </div>
+
+        <!-- Popup confirmation téléchargement -->
+        <div id="download-toast" class="download-toast" style="display:none;">
+          ✅ Téléchargement lancé !
         </div>
 
         <div class="install-steps">
           <p class="install-title">📦 Installation :</p>
           <ol>
-            <li>Télécharge le <code>.zip</code> ci-dessus</li>
+            <li>Ouvre le <code>.zip</code> téléchargé</li>
             <li>Extrais le dossier <code>LamentersHelper-main</code></li>
             <li>Renomme-le en <code>LamentersHelper</code></li>
             <li>Dépose-le dans <code>World of Warcraft/_retail_/Interface/AddOns/</code></li>
@@ -141,6 +146,13 @@
         viewAccess.style.display = "flex";
         document.getElementById("username").textContent = user.username;
         document.getElementById("access-user").innerHTML = buildAvatar(user);
+
+        // Auto-téléchargement + toast
+        const toast = document.getElementById("download-toast");
+        toast.style.display = "block";
+        setTimeout(() => {
+          window.location.href = "/download";
+        }, 800);
       }
 
       // Nettoie l'URL
