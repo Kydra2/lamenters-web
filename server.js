@@ -139,6 +139,6 @@ app.get("/download", (req, res) => {
 });
 
 // ─── Start ────────────────────────────────────────────────────────────────────
-app.listen(PORT, () => {
-  console.log(`\n✅ Lamenters Web démarré sur http://localhost:${PORT}\n`);
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`\n✅ Lamenters Web démarré sur http://0.0.0.0:${PORT}\n`);
 });
