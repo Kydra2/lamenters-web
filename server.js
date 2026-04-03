@@ -5,6 +5,9 @@ const axios   = require("axios");
 
 const app = express();
 
+// Railway est derrière un proxy HTTPS — indispensable pour que les cookies fonctionnent
+app.set("trust proxy", 1);
+
 // ─── Config ───────────────────────────────────────────────────────────────────
 const {
   DISCORD_CLIENT_ID,
@@ -43,8 +46,9 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: {
-      secure: process.env.NODE_ENV === "production",
+      secure: true,       // Railway est toujours HTTPS
       httpOnly: true,
+      sameSite: "lax",    // nécessaire pour les redirections OAuth
       maxAge: 24 * 60 * 60 * 1000, // 24h
     },
   })
@@ -133,6 +137,7 @@ app.get("/auth/logout", (req, res) => {
 
 // Retourne les infos de l'utilisateur connecté (utilisé par le frontend)
 app.get("/api/me", (req, res) => {
+  console.log(`[/api/me] sessionID=${req.sessionID} user=${req.session.user?.username || "none"}`);
   res.json(req.session.user || null);
 });
 
