@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Les Lamenters — Addon</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div class="stars"></div>
+
+  <main class="container">
+
+    <!-- Header -->
+    <header class="header">
+      <div class="guild-logo">⚔️</div>
+      <h1 class="guild-name">Les Lamenters</h1>
+      <p class="guild-subtitle">Portail de téléchargement — LamentersHelper</p>
+    </header>
+
+    <!-- Carte principale -->
+    <div class="card" id="main-card">
+
+      <!-- État : non connecté -->
+      <div id="view-login" class="view">
+        <div class="card-icon">🔒</div>
+        <h2>Accès réservé aux membres</h2>
+        <p class="card-desc">
+          Connecte-toi avec ton compte Discord pour vérifier<br />
+          ton appartenance à la guilde et accéder à l'addon.
+        </p>
+        <a href="/auth/discord" class="btn btn-discord">
+          <svg class="discord-logo" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.043.033.055a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/>
+          </svg>
+          Se connecter avec Discord
+        </a>
+        <div id="error-msg" class="error-msg" style="display:none;"></div>
+      </div>
+
+      <!-- État : accès refusé -->
+      <div id="view-denied" class="view" style="display:none;">
+        <div class="card-icon">🚫</div>
+        <h2>Accès refusé</h2>
+        <p class="card-desc denied-text">
+          Vous n'êtes pas membre de la guilde des Lamenters !
+        </p>
+        <p class="card-subdesc">
+          Seuls les membres avec le rang <strong>Primarques</strong> ou <strong>Astartes</strong><br />
+          ont accès à cet espace.
+        </p>
+        <div class="user-info" id="denied-user"></div>
+        <a href="/auth/logout" class="btn btn-logout">Se déconnecter</a>
+      </div>
+
+      <!-- État : accès autorisé -->
+      <div id="view-access" class="view" style="display:none;">
+        <div class="card-icon">✅</div>
+        <h2>Bienvenue, <span id="username"></span> !</h2>
+        <div class="user-info" id="access-user"></div>
+        <p class="card-desc">
+          Tu es membre de la guilde. Télécharge la dernière version<br />
+          de l'addon ci-dessous.
+        </p>
+
+        <div class="addon-box">
+          <div class="addon-info">
+            <div class="addon-icon">🧩</div>
+            <div>
+              <div class="addon-name">LamentersHelper</div>
+              <div class="addon-version">Toujours à jour — branche <code>main</code></div>
+            </div>
+          </div>
+          <a href="/download" class="btn btn-download">
+            ⬇ Télécharger l'addon
+          </a>
+        </div>
+
+        <div class="install-steps">
+          <p class="install-title">📦 Installation :</p>
+          <ol>
+            <li>Télécharge le <code>.zip</code> ci-dessus</li>
+            <li>Extrais le dossier <code>LamentersHelper-main</code></li>
+            <li>Renomme-le en <code>LamentersHelper</code></li>
+            <li>Dépose-le dans <code>World of Warcraft/_retail_/Interface/AddOns/</code></li>
+            <li>Lance WoW ou tape <code>/reload</code></li>
+          </ol>
+        </div>
+
+        <a href="/auth/logout" class="btn btn-logout">Se déconnecter</a>
+      </div>
+
+    </div>
+
+    <footer class="footer">
+      Les Lamenters &copy; 2026 — World of Warcraft : Midnight
+    </footer>
+
+  </main>
+
+  <script>
+    // Récupère l'état de connexion depuis l'API et affiche la bonne vue
+    async function init() {
+      // Gestion des erreurs de l'URL
+      const params = new URLSearchParams(window.location.search);
+      const error  = params.get("error");
+
+      const res  = await fetch("/api/me");
+      const user = await res.json();
+
+      const viewLogin  = document.getElementById("view-login");
+      const viewDenied = document.getElementById("view-denied");
+      const viewAccess = document.getElementById("view-access");
+
+      if (!user) {
+        // Non connecté
+        viewLogin.style.display  = "flex";
+        viewDenied.style.display = "none";
+        viewAccess.style.display = "none";
+
+        if (error === "auth_failed") {
+          const el = document.getElementById("error-msg");
+          el.textContent = "Erreur lors de la connexion Discord. Réessaie.";
+          el.style.display = "block";
+        } else if (error === "cancelled") {
+          const el = document.getElementById("error-msg");
+          el.textContent = "Connexion annulée.";
+          el.style.display = "block";
+        }
+      } else if (!user.hasAccess) {
+        // Connecté mais pas membre
+        viewLogin.style.display  = "none";
+        viewDenied.style.display = "flex";
+        viewAccess.style.display = "none";
+        document.getElementById("denied-user").innerHTML = buildAvatar(user);
+      } else {
+        // Accès autorisé
+        viewLogin.style.display  = "none";
+        viewDenied.style.display = "none";
+        viewAccess.style.display = "flex";
+        document.getElementById("username").textContent = user.username;
+        document.getElementById("access-user").innerHTML = buildAvatar(user);
+      }
+
+      // Nettoie l'URL
+      if (error) window.history.replaceState({}, "", "/");
+    }
+
+    function buildAvatar(user) {
+      return `<img class="avatar" src="${user.avatar}" alt="${user.username}" />
+              <span class="avatar-name">${user.username}</span>`;
+    }
+
+    init();
+  </script>
+
+</body>
+</html>

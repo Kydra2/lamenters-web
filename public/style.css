@@ -1,0 +1,324 @@
+/* ── Reset & base ─────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:          #0a0c10;
+  --bg-card:     #111520;
+  --bg-card2:    #191e2e;
+  --gold:        #c8a84b;
+  --gold-light:  #e8c870;
+  --gold-dim:    #6e5a28;
+  --discord:     #5865F2;
+  --discord-hov: #4752c4;
+  --green:       #2ecc71;
+  --green-hov:   #27ae60;
+  --red:         #e74c3c;
+  --text:        #d0d6e8;
+  --text-dim:    #7a8299;
+  --border:      rgba(200, 168, 75, 0.18);
+  --radius:      14px;
+}
+
+html, body {
+  height: 100%;
+  font-family: "Segoe UI", system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* ── Fond étoilé ──────────────────────────────────────────────────────────── */
+.stars {
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 20% 30%, rgba(90, 60, 140, 0.15) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 70%, rgba(40, 60, 120, 0.12) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Layout ───────────────────────────────────────────────────────────────── */
+.container {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  gap: 28px;
+}
+
+/* ── Header ───────────────────────────────────────────────────────────────── */
+.header {
+  text-align: center;
+}
+
+.guild-logo {
+  font-size: 52px;
+  margin-bottom: 10px;
+  filter: drop-shadow(0 0 18px rgba(200,168,75,0.5));
+}
+
+.guild-name {
+  font-size: 2.2rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+  background: linear-gradient(135deg, var(--gold), var(--gold-light), var(--gold));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: none;
+}
+
+.guild-subtitle {
+  margin-top: 6px;
+  color: var(--text-dim);
+  font-size: 0.95rem;
+  letter-spacing: 1px;
+}
+
+/* ── Carte principale ─────────────────────────────────────────────────────── */
+.card {
+  width: 100%;
+  max-width: 520px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 8px 48px rgba(0,0,0,0.6), 0 0 0 1px rgba(200,168,75,0.05);
+  overflow: hidden;
+}
+
+/* ── Vues ─────────────────────────────────────────────────────────────────── */
+.view {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 44px 36px;
+  gap: 18px;
+  text-align: center;
+}
+
+.card-icon {
+  font-size: 3rem;
+  line-height: 1;
+}
+
+.view h2 {
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: #eef0f8;
+}
+
+.card-desc {
+  color: var(--text-dim);
+  font-size: 0.97rem;
+  line-height: 1.65;
+}
+
+.card-subdesc {
+  color: var(--text-dim);
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+
+.card-subdesc strong {
+  color: var(--gold);
+}
+
+.denied-text {
+  color: var(--red);
+  font-weight: 600;
+  font-size: 1.05rem;
+}
+
+/* ── Avatar ───────────────────────────────────────────────────────────────── */
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--bg-card2);
+  border: 1px solid var(--border);
+  border-radius: 40px;
+  padding: 6px 16px 6px 6px;
+}
+
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid var(--gold-dim);
+}
+
+.avatar-name {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* ── Boutons ──────────────────────────────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 13px 28px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: transform 0.15s, box-shadow 0.15s, background 0.15s;
+  cursor: pointer;
+  border: none;
+}
+
+.btn:hover   { transform: translateY(-2px); }
+.btn:active  { transform: translateY(0); }
+
+.btn-discord {
+  background: var(--discord);
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(88,101,242,0.4);
+  width: 100%;
+  max-width: 300px;
+}
+.btn-discord:hover {
+  background: var(--discord-hov);
+  box-shadow: 0 6px 24px rgba(88,101,242,0.55);
+}
+
+.discord-logo {
+  width: 22px;
+  height: 22px;
+  fill: white;
+  flex-shrink: 0;
+}
+
+.btn-download {
+  background: linear-gradient(135deg, var(--gold), #a07830);
+  color: #1a1200;
+  box-shadow: 0 4px 20px rgba(200,168,75,0.35);
+  font-size: 1.05rem;
+}
+.btn-download:hover {
+  box-shadow: 0 6px 28px rgba(200,168,75,0.5);
+}
+
+.btn-logout {
+  background: transparent;
+  color: var(--text-dim);
+  border: 1px solid rgba(255,255,255,0.1);
+  font-size: 0.88rem;
+  padding: 9px 20px;
+}
+.btn-logout:hover {
+  background: rgba(255,255,255,0.05);
+  color: var(--text);
+}
+
+/* ── Addon box ────────────────────────────────────────────────────────────── */
+.addon-box {
+  width: 100%;
+  background: var(--bg-card2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.addon-info {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.addon-icon { font-size: 2.2rem; }
+
+.addon-name {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--gold-light);
+}
+
+.addon-version {
+  font-size: 0.82rem;
+  color: var(--text-dim);
+  margin-top: 2px;
+}
+
+.addon-version code {
+  background: rgba(255,255,255,0.07);
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-family: monospace;
+  color: var(--gold);
+}
+
+/* ── Étapes d'installation ────────────────────────────────────────────────── */
+.install-steps {
+  width: 100%;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 10px;
+  padding: 16px 20px;
+  text-align: left;
+}
+
+.install-title {
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 10px;
+  font-size: 0.95rem;
+}
+
+.install-steps ol {
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.install-steps li {
+  font-size: 0.88rem;
+  color: var(--text-dim);
+  line-height: 1.5;
+}
+
+.install-steps code {
+  background: rgba(200,168,75,0.12);
+  color: var(--gold);
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 0.85rem;
+}
+
+/* ── Message d'erreur ─────────────────────────────────────────────────────── */
+.error-msg {
+  color: var(--red);
+  background: rgba(231,76,60,0.1);
+  border: 1px solid rgba(231,76,60,0.25);
+  border-radius: 8px;
+  padding: 10px 18px;
+  font-size: 0.9rem;
+  width: 100%;
+  text-align: center;
+}
+
+/* ── Footer ───────────────────────────────────────────────────────────────── */
+.footer {
+  color: var(--text-dim);
+  font-size: 0.78rem;
+  letter-spacing: 0.5px;
+  opacity: 0.5;
+}
+
+/* ── Responsive ───────────────────────────────────────────────────────────── */
+@media (max-width: 560px) {
+  .view { padding: 32px 22px; }
+  .guild-name { font-size: 1.7rem; }
+}
