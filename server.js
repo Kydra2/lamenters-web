@@ -117,7 +117,7 @@ app.get("/auth/callback", async (req, res) => {
       hasAccess,
     };
 
-    res.redirect("/");
+    res.redirect(hasAccess ? "/?welcome=1" : "/");
   } catch (err) {
     console.error("[Auth Error]", err.response?.data || err.message);
     res.redirect("/?error=auth_failed");

@@ -107,9 +107,10 @@
   <script>
     // Récupère l'état de connexion depuis l'API et affiche la bonne vue
     async function init() {
-      // Gestion des erreurs de l'URL
-      const params = new URLSearchParams(window.location.search);
-      const error  = params.get("error");
+      // Gestion des paramètres de l'URL
+      const params  = new URLSearchParams(window.location.search);
+      const error   = params.get("error");
+      const welcome = params.get("welcome") === "1";
 
       const res  = await fetch("/api/me");
       const user = await res.json();
@@ -147,9 +148,8 @@
         document.getElementById("username").textContent = user.username;
         document.getElementById("access-user").innerHTML = buildAvatar(user);
 
-        // Auto-téléchargement + toast (seulement à la première connexion)
-        if (!sessionStorage.getItem("dl_done")) {
-          sessionStorage.setItem("dl_done", "1");
+        // Auto-téléchargement + toast (seulement juste après le login)
+        if (welcome) {
           const toast = document.getElementById("download-toast");
           toast.style.display = "block";
           setTimeout(() => {
@@ -164,7 +164,7 @@
       }
 
       // Nettoie l'URL
-      if (error) window.history.replaceState({}, "", "/");
+      if (error || welcome) window.history.replaceState({}, "", "/");
     }
 
     function buildAvatar(user) {
